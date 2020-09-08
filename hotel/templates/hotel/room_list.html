@@ -1,16 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid bg-secondary">
+    <div class="jumbotron jumbotron-fluid  bg-dark text-light">
+        <div class="container">
+            <h1 class="display-4 text-center">Hotel</h1>
+        </div>
+    </div>
+    <div class="row">
+        {% for room_category, room_url in room_list %}
+        <div class="col-lg-4 col-md-6 col-sm-10">
+            <div class="card m-2 shadow-secondary">
+                <img src="{% static 'hotel/img/room.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{ room_category }} Suite</h5>
+                    <p class="card-text">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rooms</title>
-</head>
+                    </p>
+                    <a href="{{ room_url }}" class="btn btn-outline-info btn-block">Book
+                        a Room</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
-<body>
-    {% for room in room_list %}
-    <h2>{{room}}</h2>
-    {% endfor %}
-</body>
-
-</html>
+{% endblock content %}

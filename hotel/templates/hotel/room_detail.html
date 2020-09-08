@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid bg-secondary" style="height: 100vh;">
+    <div class="row  h-100">
+        <div class="col-lg-7 my-auto">
+            <img class='img-fluid my-auto d-block img-thumbnail border' src="{% static 'hotel/img/room.jpg' %}"
+                alt="...">
+        </div>
+        <div class="col-lg-5 my-auto">
+            <div class=" row">
+                <div class="col-12 mx-auto">
+                    <a href="{% url 'room_list' %}" class="my-3 btn btn-danger btn-block">Back to Room List</a>
+                    <div class="jumbotron jumbotron-fluid">
+                        <div class="container">
+                            <h1 class="display-6 text-center">Book your {{ category }} Suite Room</h1>
+                            <p class="lead text-center">
+                                Luxury room with {{ room.beds }} beds and capacity for {{ room.capacity }} people
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-11 mx-auto card py-2">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <!-- Input Div -->
+                        <div class="form-group">
+                            <label for="id_check_in">Check In: </label>
+                            <input type="datetime-local" class="form-control" id="id_check_in" name="check_in">
+                        </div>
+                        <!-- Input Div -->
+                        <div class="form-group">
+                            <label for="id_check_out">Check Out: </label>
+                            <input type="datetime-local" class="form-control" id="id_check_out" name="check_out">
+                        </div>
+                        <!-- Input Div -->
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
