@@ -28,6 +28,14 @@ def RoomListView(request):
 class BookingList(ListView):
     model = Booking
 
+    def get_queryset(self, *args, **kwargs):
+        if self.request.user.is_staff:
+            book_list = Booking.objects.all()
+            return book_list
+        else:
+            book_list = Booking.objects.filter(user=self.request.user)
+            return book_list
+
 
 class RoomDetailView(View):
     def get(self, request, *args, **kwargs):
