@@ -1,16 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'hotel/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid bg-secondary">
+    <div class="jumbotron jumbotron-fluid  bg-dark text-light">
+        <div class="container">
+            <h1 class="display-4 text-center">Welcome {{ request.user }}</h1>
+            <p class='lead text-center'>These are your bookings</p>
+        </div>
+    </div>
+    <div class="row">
+        {% for booking in booking_list %}
+        <div class="col-lg-4 col-md-6 col-sm-10">
+            <div class="card m-2 shadow-secondary">
+                <a href="{% url 'room_detail' category=booking.room.category %}"><img
+                        src="{% static 'hotel/img/room.jpg' %}" class="card-img-top" alt="..."></a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ booking.get_room_category }} Suite</h5>
+                    <div class="card-text py-0 my-1">
+                        <p class='my-1'><strong>From:</strong> {{ booking.check_in }}</p>
+                        <p><strong>To:</strong> {{ booking.check_out }}</p>
+                        <p class='my-1'><strong>Beds:</strong> {{ booking.room.beds }}</p>
+                        <p><strong>Capacity:</strong> {{ booking.room.capacity }}</p>
+                    </div>
+                    <a href="{% url 'cancel_booking_view' pk=booking.pk %}"
+                        class="btn btn-outline-danger btn-block">Cancel Booking</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookings</title>
-</head>
-
-<body>
-    {% for booking in booking_list %}
-    <h2>{{booking}}</h2>
-    {% endfor %}
-</body>
-
-</html>
+{% endblock content %}

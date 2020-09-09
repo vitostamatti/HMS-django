@@ -4,15 +4,14 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
-
 class Room(models.Model):
-    
-    ROOM_CATEGORIES=(
-        ('YAC','AC'), # (CODE , Display)
-        ('NAC','NON-AC'),
-        ('DEL','DELUXE'),
-        ('KIN','KING'),
-        ('QUE','QUEEN'),
+
+    ROOM_CATEGORIES = (
+        ('YAC', 'AC'),  # (CODE , Display)
+        ('NAC', 'NON-AC'),
+        ('DEL', 'DELUXE'),
+        ('KIN', 'KING'),
+        ('QUE', 'QUEEN'),
     )
 
     number = models.IntegerField()
@@ -21,14 +20,21 @@ class Room(models.Model):
     capacity = models.IntegerField()
 
     def __str__(self):
-        return f'{self.number}. {self.category} with {self.beds} beds for {self.capacity} people' 
+        return f'{self.number}. {self.category} with {self.beds} beds for {self.capacity} people'
+
 
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     check_in = models.DateTimeField()
     check_out = models.DateTimeField()
-    
 
     def __str__(self):
         return f'{self.user} has booked room {self.room.number} from {self.check_in} to {self.check_out}'
+
+    def get_room_category(self):
+        room_categories = dict(self.room.ROOM_CATEGORIES)
+        room_category = room_categories.get(self.room.category)
+        return room_category
+
+    # def get_cancel_booking_url(self):

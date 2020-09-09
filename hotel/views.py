@@ -1,6 +1,6 @@
-from django.shortcuts import render, HttpResponse, reverse
-
-from django.views.generic import ListView, FormView, View
+from django.shortcuts import render, HttpResponse, reverse, redirect
+from django.urls import reverse_lazy
+from django.views.generic import ListView, FormView, View, DeleteView
 
 from .forms import AvailabilityForm
 from .models import *
@@ -27,6 +27,7 @@ def RoomListView(request):
 
 class BookingList(ListView):
     model = Booking
+    template_name = 'hotel/booking_list.html'
 
     def get_queryset(self, *args, **kwargs):
         if self.request.user.is_staff:
@@ -76,32 +77,12 @@ class RoomDetailView(View):
                 check_out=data['check_out'],
             )
             booking.save()
-            return HttpResponse(booking)
+            return redirect('room_list')
         else:
             return HttpResponse('All of this category of rooms are booked. Try another one or change date')
 
 
-class BookingView(FormView):
-    form_class = AvailabilityForm
-    template_name = 'hotel/room_detail.html'
-
-    def form_valid(self, form):
-        data = form.cleaned_data
-        room_list = Room.objects.filter(category=data['room_category'])
-        available_rooms = []
-        for room in room_list:
-            if check_availability(room, data['check_in'], data['check_out']):
-                available_rooms.append(room)
-
-        if len(available_rooms) > 0:
-            room = available_rooms[0]
-            booking = Booking.objects.create(
-                user=self.request.user,
-                room=room,
-                check_in=data['check_in'],
-                check_out=data['check_out'],
-            )
-            booking.save()
-            return HttpResponse(booking)
-        else:
-            return HttpResponse('All of this category of rooms are booked. Try another one or change date')
+class CancelBookingView(DeleteView):
+    model = Booking
+    success_url = reverse_lazy('booking_list')
+    template_name = 'hotel/booking_cancel_view.html'

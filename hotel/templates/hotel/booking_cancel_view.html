@@ -11,10 +11,11 @@
         <div class="col-lg-5 my-auto">
             <div class=" row">
                 <div class="col-12 mx-auto">
-                    <a href="{% url 'room_list' %}" class="my-3 btn btn-danger btn-block">Back to Room List</a>
+                    <a href="{% url 'booking_list' %}" class="my-3 btn btn-danger btn-block">Back to Bookings</a>
                     <div class="jumbotron jumbotron-fluid">
                         <div class="container">
-                            <h1 class="display-6 text-center">Book your {{ category }} Suite Room</h1>
+                            <h1 class="display-6 text-center">Cancel your Booking for {{ booking.get_room_category }}
+                                Suite Room</h1>
                             <p class="lead text-center">
                                 Luxury room with {{ room.beds }} beds and capacity for {{ room.capacity }} people
                             </p>
@@ -24,20 +25,16 @@
             </div>
             <div class="row">
                 <div class="col-11 mx-auto card py-2">
+                    <div class="card-body">
+                        <h6>Booking Details:</h6>
+                        <p>From: {{ booking.check_in }}</p>
+                        <p>To: {{ booking.check_out }}</p>
+                    </div>
                     <form method="POST" action="">
                         {% csrf_token %}
                         <!-- Input Div -->
-                        <div class="form-group">
-                            <label for="id_check_in">Check In: </label>
-                            <input type="datetime-local" class="form-control" id="id_check_in" name="check_in">
-                        </div>
                         <!-- Input Div -->
-                        <div class="form-group">
-                            <label for="id_check_out">Check Out: </label>
-                            <input type="datetime-local" class="form-control" id="id_check_out" name="check_out">
-                        </div>
-                        <!-- Input Div -->
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-warning btn-block">Cancel Booking</button>
                     </form>
 
                 </div>
